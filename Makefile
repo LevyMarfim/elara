@@ -21,3 +21,11 @@ doune:
 	docker network prune
 	docker system prune -a
 	docker builder prune -a
+
+rebuild:
+	docker compose down
+	docker volume prune -a
+	docker network prune
+	docker system prune -a
+	docker builder prune -a
+	docker compose up -d --build
