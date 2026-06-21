@@ -1,6 +1,26 @@
-
 services:
-###> doctrine/doctrine-bundle ###
+  app:
+    container_name: elara-app
+    image: elara-app:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - elara_network
+    ports:
+      - '80:80'
+    healthcheck:
+      test: [ "CMD", "php", "-v" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: always
+    tty: true
+
   database:
     image: postgres:${POSTGRES_VERSION}-alpine
     container_name: elara-db
@@ -18,9 +38,11 @@ services:
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql:rw
-###< doctrine/doctrine-bundle ###
 
 volumes:
-###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
+  caddy_data:
+  caddy_config:
+
+networks:
+  elara_network:
