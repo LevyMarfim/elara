@@ -63,9 +63,8 @@ rebuild:
 	@echo ""
 
 aaaa:
-	for container in $(docker network inspect <NETWORK_NAME> -f '{{range .Containers}}{{.Name}} {{end}}'); do \
-  		docker network disconnect -f <NETWORK_NAME> "$container" \
-	done && docker network rm <NETWORK_NAME>
+	chmod +x clean-docker.sh
+	./clean-docker.sh
 
 # ==============================================================================
 # UTILITY TARGETS
